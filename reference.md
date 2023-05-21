@@ -59,7 +59,7 @@ extend it, /var/local/data/app-directory as example. The content should not be v
 
 Global implementation installs specific systemd service to create custom directory to /run/app-name since /run owned by root and not world-writable.
 
-## Local
+### Local
 
 Offline/local installation only allows offline uses. Local server listen to /run/user/<uid>/app-name/sock.
 Better if local depends on true core. This bypasses the use for daemon process but requires to input password every operations.
@@ -72,21 +72,28 @@ Executables are stored to ~/.local/bin
 
 **Future notation**: if a path starts with /app, expand it as either ~/.config/app-name or /var/local/data/app-name
 
-## CLI Interface
+### CLI Interface
 
 CLI Interface brings 5 commands. `list`, `read`, `edit`, `delete`, `trash`.
 For `trash`, only 2 sub-commands: `restore`, `purge`.
 
+Edit should bring user's favorite CLI tools like VIm, Emacs, Nano, etc.
+
 Deletion for default to trash. Trash are in /app/data/trash
 
-Can connect to local, offline, or server mode.
+Can connect to `offline`, `local`, `global`, and `server` mode.
 
-## GUI Interface
+### GUI Interface
 
-GUI interface may use GTk, TKinter, or anything. Can connect to local, offline, or server mode.
+GUI interface may use GTk, TKinter, or anything. Can connect to `offline`, `local`, `global`, and `server` mode.
 
-## Web Interfacce
+### Web Interfacce
 
 Web Interface should behave the same as GUI interface. Though differs. A middleman is required just like GUI inteface.
 
-Can connect to local, offline or server.
+Can connect to `offline`, `local`, `global`, `server`
+
+### Specific Web Interface
+
+Custom Web Interface can be used as opposed to default web interface. Useful for live 'production' server since
+it should connect to local unix socket. A bypass can be used than using unix socket.
