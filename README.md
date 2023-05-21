@@ -7,3 +7,5 @@ This app only works for Unix-like OSes (Linux is recommended) since setuid is re
 And socket file for communicating from client to daemon.
 
 This is for fun app, may not be great for security reason.
+
+**THIS APPLICATION IS IN DESIGN PHASE** No real implementation has been added. Abstraction has been made. Reference exists
