@@ -72,7 +72,7 @@ Executables are stored to ~/.local/bin
 
 **Future notation**: if a path starts with /app, expand it as either ~/.config/app-name or /var/local/data/app-name
 
-### CLI Interface
+#### CLI Interface
 
 CLI Interface brings 5 commands. `list`, `read`, `edit`, `delete`, `trash`.
 For `trash`, only 2 sub-commands: `restore`, `purge`.
@@ -83,17 +83,22 @@ Deletion for default to trash. Trash are in /app/data/trash
 
 Can connect to `offline`, `local`, `global`, and `server` mode.
 
-### GUI Interface
+#### GUI Interface
 
 GUI interface may use GTk, TKinter, or anything. Can connect to `offline`, `local`, `global`, and `server` mode.
 
-### Web Interfacce
+#### Web Interfacce
 
 Web Interface should behave the same as GUI interface. Though differs. A middleman is required just like GUI inteface.
 
 Can connect to `offline`, `local`, `global`, `server`
 
-### Specific Web Interface
+#### Specific Web Interface
 
 Custom Web Interface can be used as opposed to default web interface. Useful for live 'production' server since
 it should connect to local unix socket. A bypass can be used than using unix socket.
+
+### Make-based install
+
+If modes and interfaces are too much to install, we can use make.
+Now, basic make file has been created.
