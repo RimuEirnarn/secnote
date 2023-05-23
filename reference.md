@@ -15,7 +15,7 @@ For local, notes are located at ~/.config/app-dir/data/notes
 
 But, file for local can be altered into using sqlite if user sets corresponding config.
 
-All notes are encrypted.
+All notes are encrypted by default.
 
 Local Notes schema:
 
@@ -102,3 +102,110 @@ it should connect to local unix socket. A bypass can be used than using unix soc
 
 If modes and interfaces are too much to install, we can use make.
 Now, basic make file has been created.
+
+## Informations
+
+### Non-Unix-like compatibility
+
+Systems like Windows are only able to use `offline` and `client` mode.
+
+### Modes
+
+What are these modes anyway?
+
+#### `offline`
+
+`offline` mode is an offline mode that in no way uses either a networking stuff like Unix Socket or TCP/UDP.
+
+#### `local`
+
+Different from `offline`, this mode relies on unix socket.
+Its runtime directory is stored in `/run/user/<uid>` which makes it quite incompatible with any non-unix-like systems.
+
+#### `global`
+
+Quite the same as `local` except that it can be used by other users. There are almost no difference from `global` and `server`.
+Its runtime directory is stored in `/run`.
+
+#### `server`
+
+`server` mode can either relies on `/run/app-name/sock` or use direct database connection.
+This mode should be forcefully available to Linux or Unix-like systems since it requires a different user and private directory.
+Feature check against `adduser`, `id`, and `os.name`, `setuid` will determine the availability of `server` mode.
+Private directory are stored in `/var/local/data/<app-name>`
+
+#### `client`
+
+`client` mode relies HTTP connection to be able to connect to the server. Nothing is stored in user-space except possible cookies.
+But, this only depends on the server you're connecting. The project doesn't actually need to implement this mode since you can connect
+to the server from browser.
+
+### Features
+
+What feature can be disabled and enabled?
+
+#### SQLite3
+
+Enabling `sqlite3` brings availability to all (except `client`) modes.
+Disabling `sqlite3` only disables `local`, and `server`
+Feature checks are done by checking `sqlite` availability in Python stdlib.
+
+#### FSN (File System Notes)
+
+Since SQLite3 and FSN are used to store notes. There's no way you will disable FSN feature when already disabled SQLite3 feature.
+Enabling FSN only unlock `offline`.
+Disabling FSN only disables `offline`.
+
+#### Encryption
+
+Enabling `encryption` doesn't affect what modes are available.
+Disabling `encryption` only disables `global` (not direct `global`) and `server`
+Feature checks are done by checking `hmac` availability in Python stdlib.
+
+#### X Interface
+
+You can disable all except 1 interface.
+
+#### X Modes
+
+You can disable all except 1 modes. If by disabling few specific features and resulting to only 1 left, the installation will skip to build process.
+
+### `global` and `server`
+
+The installation requires root privilege to be able to install to `/usr/local` directory,
+create new system user (by UID-612), create new private/home directory at `/var/local`,
+and install systemd service file.
+
+"What systemd service file does?" create directory at `/var`. This step will be skipped if direct `global` is used.
+
+### Private directories and System User
+
+Suppose a configured user is "secnote" with uid of 612.
+The expansion of private directories are:
+
+```
+/var/local/data/secnote
+/run/secnote
+```
+
+Suppose a local installation provide app name with "secnote":
+
+```
+/home/<username>/.config/secnote
+```
+
+```
+C:\Users\<username>\AppData\secnote
+C:\Users\<username\.config\secnote
+```
+
+The expansions really depends on **HOW** it was installed. For Windows, if installed through Wizard, yes.
+The first entry is used. Fallback to `~/.config/secnote` if build from source.
+
+### direct `global`
+
+Direct global disables password-cache if encryption is enabled.
+
+### `global`
+
+Let's hope that parent process UID is helpful to determine who's calling the app.
